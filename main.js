@@ -1,136 +1,76 @@
-//DOM - document object model
+const nameInput = document.querySelector("#name");
+const ageInput = document.querySelector("#age");
+const cityInput = document.querySelector("#city");
+const createButton = document.querySelector("#create");
+const usersSection = document.querySelector("#users-section");
+const searchInput = document.querySelector("#search");
+const searchButton = document.querySelector("#search-button");
+const cancelSearchButton = document.querySelector("#cancel-search-button");
 
+let users = [
+  { name: "Igor", city: "Kyiv", age: 20 },
+  { name: "Alex", city: "Kyiv", age: 50 },
+  { name: "Oleg", city: "Kyiv", age: 10 },
+];
 
-// const h1 = document.getElementById("h1");
-// console.log(h1, "h1");
-// h1.textContent = "Hello World";
+renderUsers(users);
 
-// const spans = document.getElementsByTagName("span");
-// console.log(spans, "spans");
+const deleteUser = (indexOfUser) => {
+  users = users.filter((el, i) => i !== indexOfUser);
+  renderUsers(users);
+};
 
-// const spansWithNames = document.getElementsByName("span");
+function renderUsers(usersToRender) {
+  usersSection.innerHTML = "";
 
-// [...spansWithNames].forEach((el) => el.style.color = "red" );
+  const usersContent = usersToRender.map(
+    (user) => `<div class="user-card">
+        <p>${user.name}</p>
+        <p>${user.city}</p>
+        <span>${user.age}</span>
+        <button class="delete-user-button">Delete</button>
+    </div>`
+  );
 
-// [...spans].forEach((el, i) => {
-//     el.textContent = i;
-// });
+  usersContent.forEach((userLayout) => {
+    usersSection.innerHTML += userLayout;
+  });
 
-// const allElements = [...document.querySelectorAll("*")];
+  const deleteButtons = [...document.querySelectorAll(".delete-user-button")];
 
-// allElements.forEach((el) => el.style.fontSize = "100px" );
-
-// const h1 = document.querySelector("h1");
-// const wrapper = document.querySelector("#wrapper");
-
-// const incrementButton = document.querySelector("#increment");
-// const decrementButton = document.querySelector("#decrement");
-// const resetButton = document.querySelector("#reset");
-
-// let counter = 0;
-
-// incrementButton.onclick = () => {
-//    counter = counter + 1;
-//    h1.textContent = counter;
-//    onChangeCounter();
-// }
-
-// decrementButton.onclick = () => {
-//     counter = counter - 1;
-//     h1.textContent = counter;
-//     onChangeCounter();
-// }
-
-// resetButton.onclick = () => {
-//     counter = 0;
-//     h1.textContent = counter;
-//     onChangeCounter();
-// }
-
-// const onChangeCounter = () => {
-//     document.body.style.background = `rgb(${counter * 10}, ${counter * 10}, ${counter * 10})`;
-// }
-
-const addSquareButton = document.getElementById("addSquare");
-
-class Square {
-    constructor (size, color, textContent) {
-        this.size = size;
-        this.color = color;
-        this.textContent = textContent;
-        this.element = document.createElement("div");
-
-        this.element.textContent = textContent;
-        this.element.style.width = this.size + "px";
-        this.element.style.height = this.size + "px";
-        this.element.style.background = this.color;
-        this.element.className = "square";
-    }
-
-    render (htmlElement) {
-        htmlElement.appendChild(this.element);
-    }
-
-    delete (htmlElement) {
-        htmlElmeent.removeChild(this.element);
-    }
-
-    changeText (text) {
-        this.textContent = text;
-        this.element.textContent = text;
-    }
+  deleteButtons.forEach((button, i) => {
+    button.onclick = () => deleteUser(i);
+  });
 }
 
-let counter = 0;
+createButton.onclick = () => {
+  const name = nameInput.value;
+  const age = +ageInput.value;
+  const city = cityInput.value;
 
-const colorsOfSquare = ["black", "lightskyblue", "lime"];
+  const user = { name: name, age: age, city: city };
 
-const getRandomColor = (arr) => {
-    const randomNumber = Math.floor(Math.random() * (arr.length));
-    return arr[randomNumber];
-}
+  users.push(user);
 
-addSquareButton.onclick = () => {
-    const square = new Square(100, getRandomColor(colorsOfSquare), counter);
-    square.render(document.body);
+  nameInput.value = "";
+  ageInput.value = "";
+  cityInput.value = "";
 
-    square.changeText("Hello" + " " + counter);
+  renderUsers(users);
+};
 
-    square.element.onclick = () => {
-        square.delete(document.body);
-        counter = 0;
-    }
+searchButton.onclick = () => {
+  const usersToRender = users.filter((user) =>
+    user.name.includes(searchInput.value)
+  );
+  renderUsers(usersToRender);
+};
 
-    counter = counter + 1;
-}
+cancelSearchButton.onclick = () => {
+    renderUsers(users);
+    searchInput.value = "";
+};
 
-const addText =(text)=>{
-    const span =documenty.createElement("span");
-    span.textContent = text;
-
-    document.body.appendChild(span);
-}
-
-
-window.onload = () =>{
-    alert("Hello I am loaded");
-}
-
-window.onblur = () =>{
-    document.title = "Hey come Back";
-}
-window.onfocus =()=>{
-    document.title = "Focused";
-}
-window.onclose =()=>{
-
-}
-const googleButton = document.querySelector("#google-button");
-
-googleButton.onclick =()=>{
-    // window.open("https://www.google.com");
-    window.location = "https://www.google.com"
-}
 
 
 
